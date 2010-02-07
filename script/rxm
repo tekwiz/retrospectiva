@@ -5,6 +5,11 @@
 # Please read LICENSE document for more information.
 #++
 
+if rails_env = ARGV.grep(/\ARAILS_ENV=/).first
+  ARGV.delete rails_env
+  RAILS_ENV = rails_env.sub('RAILS_ENV=', '')
+end
+
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 
 puts "\n\n----- Retrospectiva extension manager CLI\n"
