@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   filter_parameter_logging :password
   
+  before_filter :ensure_https
   before_filter :authenticate
   before_filter :store_back_to_path
   before_filter :set_locale
@@ -80,6 +81,12 @@ class ApplicationController < ActionController::Base
         end
       else
         super
+      end
+    end
+    
+    def ensure_https
+      if !request.ssl? && request.get? && RAILS_ENV == 'production'
+        redirect_to "https://" + request.host + ':8003' + request.request_uri
       end
     end
 
